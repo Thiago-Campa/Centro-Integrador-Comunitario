@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+
+/* ===== TEMA CIC: azul comunitario + amarillo del juego ===== */
+:root {
+  --azul: #368dff;
+  --azul-medio: #1d5fc4;
+  --azul-hondo: #0e2f6b;
+  --amarillo: #ffd54a;
+  --vidrio: rgba(40, 110, 220, 0.55);
+  --papel: rgba(255, 255, 255, 0.94);
+  --tinta: #1c2b4a;
+  --radio: 18px;
+  --sombra: 0 12px 40px rgba(5, 25, 70, 0.35);
+}
+
+html { background: var(--azul-hondo); }
+
+body {
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  background: transparent;
+  color: var(--tinta);
+  min-height: 100vh;
+}
+
+/* Capa 1: la foto del CIC fija, con velo azul */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(54, 141, 255, 0.55) 0%, rgba(10, 35, 95, 0.78) 100%),
+    url("../Images/cic-fondo.webp") center / cover no-repeat;
+  transform: translateZ(0);
+}
+
+/* Capa 2: burbujas de colores que derivan despacio */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -8%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(255, 213, 74, 0.38) 0 70px, transparent 72px),
+    radial-gradient(circle at 88% 14%, rgba(255, 255, 255, 0.22) 0 42px, transparent 44px),
+    radial-gradient(circle at 80% 82%, rgba(54, 141, 255, 0.45) 0 120px, transparent 122px),
+    radial-gradient(circle at 18% 86%, rgba(255, 255, 255, 0.2) 0 34px, transparent 36px),
+    radial-gradient(circle at 50% 8%, rgba(255, 213, 74, 0.5) 0 16px, transparent 18px);
+  animation: deriva 20s ease-in-out infinite alternate;
+}
+
+@keyframes deriva {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(2.5%, -4%, 0) rotate(1.5deg); }
+}
+
+@keyframes subir {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+::selection { background: var(--amarillo); color: var(--azul-hondo); }
+
+:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+
+/* Barras de scroll a tono */
+* { scrollbar-width: thin; scrollbar-color: var(--azul) transparent; }
+
+/* Login */
+body .login-container {
+  background: var(--papel);
+  backdrop-filter: blur(12px);
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--sombra);
+  margin: 70px auto;
+  animation: subir 0.8s cubic-bezier(.2, .8, .2, 1) both;
+}
+body .login-header img { border-radius: 14px; box-shadow: 0 6px 18px rgba(14, 47, 107, 0.25); }
+body .login-header h2 { color: var(--azul-hondo); font-weight: 800; }
+body .form-group input { border: 2px solid #d6e4fb; border-radius: 12px; transition: border-color .2s, box-shadow .2s; }
+body .form-group input:focus { border-color: var(--azul); box-shadow: 0 0 0 4px rgba(54, 141, 255, 0.2); }
+body .btn-login {
+  background: linear-gradient(135deg, var(--azul), var(--azul-medio));
+  border-radius: 12px; transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 6px 16px rgba(29, 95, 196, 0.4);
+}
+body .btn-login:hover { opacity: 1; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(29, 95, 196, 0.5); }
+body .btn-back { background: #e8eefb; color: var(--azul-hondo); border-radius: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body::after, body .login-container { animation: none; }
+}
+
+/* En el inicio la foto ya está en la cabecera: el fondo de la página es solo degradé azul */
+body.inicio::before {
+  background: linear-gradient(180deg, #368dff 0%, #1d5fc4 45%, #0e2f6b 100%);
+}

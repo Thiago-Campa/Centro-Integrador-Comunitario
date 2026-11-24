@@ -11,8 +11,8 @@ body {
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #368dff;
+    font-family: "Nunito", system-ui, Arial, sans-serif;
+    background: transparent;
     line-height: 1.6;
 }
 
@@ -34,47 +34,128 @@ body {
 }
 
 
+/* ===== PANTALLA INICIAL ===== */
 .fondo-principal {
     position: relative;
-    background-image: url(/CIC-rama-pico/Images/cic.webp);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 100px 20px;
+    isolation: isolate;
+    background-color: #1d5fc4;
+    padding: 80px 20px;
     color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    min-height: 510px;   /* se adapta al contenido */
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(10, 40, 100, 0.45);
+    min-height: min(78vh, 680px);
     overflow: hidden;
-    z-index: 1;
 
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Foto del CIC: respira muy despacio (zoom suave) */
 .fondo-principal::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(60, 60, 204, 0.3);
-    z-index: 0;
-    border-radius: 8px;
+    inset: 0;
+    background: url("../Images/cic-fondo.webp") center 62% / cover no-repeat;
+    z-index: -3;
+    animation: respirar 22s ease-in-out infinite alternate;
 }
 
+/* Velo azul: oscurece arriba y abajo para que el texto se lea */
+.fondo-principal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 45%, rgba(20, 70, 160, 0.10) 0%, rgba(10, 35, 95, 0.55) 100%),
+        linear-gradient(180deg, rgba(54, 141, 255, 0.35) 0%, rgba(10, 35, 95, 0.25) 55%, rgba(10, 35, 95, 0.7) 100%);
+    z-index: -2;
+}
+
+@keyframes respirar {
+    from { transform: scale(1); }
+    to   { transform: scale(1.12) translateY(-1.5%); }
+}
+
+/* Burbujas de color flotando (azul CIC + amarillo del juego) */
+.fondo-principal .burbuja {
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(1px);
+    animation: flotar 9s ease-in-out infinite;
+}
+.burbuja.b1 { width: 130px; height: 130px; left: 6%;  top: 12%;    background: rgba(255, 213, 74, 0.55); animation-duration: 10s; }
+.burbuja.b2 { width: 70px;  height: 70px;  right: 9%; top: 18%;    background: rgba(255, 255, 255, 0.35); animation-duration: 7s;  animation-delay: -2s; }
+.burbuja.b3 { width: 180px; height: 180px; right: 4%; bottom: 8%;  background: rgba(54, 141, 255, 0.5);  animation-duration: 12s; animation-delay: -4s; }
+.burbuja.b4 { width: 50px;  height: 50px;  left: 14%; bottom: 14%; background: rgba(255, 255, 255, 0.4);  animation-duration: 8s;  animation-delay: -1s; }
+.burbuja.b5 { width: 28px;  height: 28px;  left: 46%; top: 9%;     background: rgba(255, 213, 74, 0.7);  animation-duration: 6s;  animation-delay: -3s; }
+
+@keyframes flotar {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(14px, -26px); }
+}
+
+/* Tarjeta de vidrio con el mensaje */
 .fondo-principal .texto-rectangulo {
-    background-color: #368dff;
+    background: rgba(40, 110, 220, 0.55);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
+    padding: 28px 30px 34px;
+    border-radius: 20px;
+    max-width: 520px;
     margin: 0 auto;
     text-align: center;
     position: relative;
     z-index: 1;
+    box-shadow: 0 12px 40px rgba(5, 25, 70, 0.4);
+    animation: entrar 1s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes entrar {
+    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    to   { opacity: 1; transform: none; }
+}
+
+.fondo-principal h1 {
+    font-size: clamp(26px, 4.2vw, 40px);
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 12px rgba(0, 20, 70, 0.5);
+}
+
+.fondo-principal p {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+/* Botón principal con latido para llamar la atención */
+.fondo-principal .btn {
+    margin-top: 26px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    animation: latido 2.6s ease-in-out 1.4s infinite;
+}
+.fondo-principal .btn:hover {
+    animation: none;
+    background-color: #ffd54a;
+    color: #0e2f6b;
+    transform: scale(1.07);
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1);    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 255, 255, 0.55); }
+    50%      { transform: scale(1.05); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3), 0 0 0 14px rgba(255, 255, 255, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fondo-principal::before,
+    .fondo-principal .burbuja,
+    .fondo-principal .texto-rectangulo,
+    .fondo-principal .btn { animation: none; }
 }
 
 .btn {
@@ -145,9 +226,12 @@ footer {
     }
 
     .fondo-principal {
-        padding: 60px 15px;
-        min-height: auto;
+        padding: 50px 15px;
+        min-height: 520px;
     }
+
+    .burbuja.b3 { width: 110px; height: 110px; }
+    .burbuja.b1 { width: 80px; height: 80px; }
 
     .fondo-principal .texto-rectangulo {
         max-width: 100%;
@@ -170,7 +254,8 @@ footer {
 
 @media (max-width: 480px) {
     .fondo-principal {
-        padding: 40px 10px;
+        padding: 36px 10px;
+        min-height: 480px;
     }
 
     .fondo-principal h1 {
@@ -215,3 +300,10 @@ footer .produced-by a {
 footer .produced-by a:hover {
     text-decoration: underline;
 }
+
+/* ===== Remate del tema ===== */
+.mapa { border: 3px solid rgba(255, 255, 255, 0.7); box-shadow: 0 10px 34px rgba(5, 25, 70, 0.4); }
+.logo-abajo .icono-form { filter: drop-shadow(0 4px 10px rgba(0, 20, 70, 0.5)); transition: transform .4s; }
+.logo-abajo .icono-form:hover { transform: scale(1.1) rotate(-3deg); }
+footer, footer .produced-by { background: transparent; color: rgba(255, 255, 255, 0.85); }
+footer .produced-by a { color: #ffd54a; font-weight: 700; }
